@@ -63,28 +63,28 @@ jobs:
 #      - persist_to_workspace:
 #          root: ~/
 #          paths: build_directory
-
-  "Release Source":
-    executor: default-execution-environment
-    steps:
-      - attach_workspace:
-          at: ~/
-
-      - add_ssh_keys
-      - run:
-          # See issue : https://discuss.circleci.com/t/known-hosts-in-circle-2-0/18544
-          name: "Keyscan Github (HACK)"
-          command: ssh-keyscan -H github.com >> ~/.ssh/known_hosts
-
-      - run:
-          name: "Configure Git User"
-          command: git config --local user.name "tech-rebel" && git config --local user.email "tech.rebel@marabele.africa"
-          when: always
-
-      - run:
-          name: "Execute Release"
-          command: mvn -Drepo.username=$REPO_USERNAME -Drepo.password=$REPO_PASSWORD -s .circleci/maven-settings.xml --batch-mode release:clean release:prepare release:perform
-          when: always
+#
+#  "Release Source":
+#    executor: default-execution-environment
+#    steps:
+#      - attach_workspace:
+#          at: ~/
+#
+#      - add_ssh_keys
+#      - run:
+#          # See issue : https://discuss.circleci.com/t/known-hosts-in-circle-2-0/18544
+#          name: "Keyscan Github (HACK)"
+#          command: ssh-keyscan -H github.com >> ~/.ssh/known_hosts
+#
+#      - run:
+#          name: "Configure Git User"
+#          command: git config --local user.name "tech-rebel" && git config --local user.email "tech.rebel@marabele.africa"
+#          when: always
+#
+#      - run:
+#          name: "Execute Release"
+#          command: mvn -Drepo.username=$REPO_USERNAME -Drepo.password=$REPO_PASSWORD -s .circleci/maven-settings.xml --batch-mode release:clean release:prepare release:perform
+#          when: always
 
 workflows:
   version: 2
@@ -93,29 +93,29 @@ workflows:
     jobs:
       - "Build Source":
           context: REPO_CONTEXT
-      - "Approve Source Release":
-          type: approval
-          requires:
-            - "Build Source"
-          filters:
-            branches:
-              only:
-                - development
-                - hotfix
-      - "Release Source":
-          requires:
-            - "Approve Source Release"
-          context: REPO_CONTEXT
-
-  "Nightly Build":
-    triggers:
-      - schedule:
-          cron: "59 23 * * *"
-          filters:
-            branches:
-              only:
-                - development
-    jobs:
-      - "Build Source"
+#      - "Approve Source Release":
+#          type: approval
+#          requires:
+#            - "Build Source"
+#          filters:
+#            branches:
+#              only:
+#                - development
+#                - hotfix
+#      - "Release Source":
+#          requires:
+#            - "Approve Source Release"
+#          context: REPO_CONTEXT
+#
+#  "Nightly Build":
+#    triggers:
+#      - schedule:
+#          cron: "59 23 * * *"
+#          filters:
+#            branches:
+#              only:
+#                - development
+#    jobs:
+#      - "Build Source"
 
 
