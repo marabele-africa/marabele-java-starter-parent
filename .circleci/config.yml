@@ -53,38 +53,38 @@ jobs:
           paths:
             - ~/.m2
           key: v1-dependencies-{{ checksum "pom.xml" }}
-#
-#      # Build project and persist results to workspace
-#      - run:
-#          name: "Build Source"
-#          command: mvn -Drepo.username=$REPO_USERNAME -Drepo.password=$REPO_PASSWORD -s .circleci/maven-settings.xml --batch-mode clean install
-#          when: always
-#
-#      - persist_to_workspace:
-#          root: ~/
-#          paths: build_directory
-#
-#  "Release Source":
-#    executor: default-execution-environment
-#    steps:
-#      - attach_workspace:
-#          at: ~/
-#
-#      - add_ssh_keys
-#      - run:
-#          # See issue : https://discuss.circleci.com/t/known-hosts-in-circle-2-0/18544
-#          name: "Keyscan Github (HACK)"
-#          command: ssh-keyscan -H github.com >> ~/.ssh/known_hosts
-#
-#      - run:
-#          name: "Configure Git User"
-#          command: git config --local user.name "tech-rebel" && git config --local user.email "tech.rebel@marabele.africa"
-#          when: always
-#
-#      - run:
-#          name: "Execute Release"
-#          command: mvn -Drepo.username=$REPO_USERNAME -Drepo.password=$REPO_PASSWORD -s .circleci/maven-settings.xml --batch-mode release:clean release:prepare release:perform
-#          when: always
+
+      # Build project and persist results to workspace
+      - run:
+          name: "Build Source"
+          command: mvn -Drepo.username=$REPO_USERNAME -Drepo.password=$REPO_PASSWORD -s .circleci/maven-settings.xml --batch-mode clean install
+          when: always
+
+      - persist_to_workspace:
+          root: ~/
+          paths: build_directory
+
+  "Release Source":
+    executor: default-execution-environment
+    steps:
+      - attach_workspace:
+          at: ~/
+
+      - add_ssh_keys
+      - run:
+          # See issue : https://discuss.circleci.com/t/known-hosts-in-circle-2-0/18544
+          name: "Keyscan Github (HACK)"
+          command: ssh-keyscan -H github.com >> ~/.ssh/known_hosts
+
+      - run:
+          name: "Configure Git User"
+          command: git config --local user.name "tech-rebel" && git config --local user.email "tech.rebel@marabele.africa"
+          when: always
+
+      - run:
+          name: "Execute Release"
+          command: mvn -Drepo.username=$REPO_USERNAME -Drepo.password=$REPO_PASSWORD -s .circleci/maven-settings.xml --batch-mode release:clean release:prepare release:perform
+          when: always
 
 workflows:
   version: 2
