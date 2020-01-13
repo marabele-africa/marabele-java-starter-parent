@@ -44,25 +44,25 @@ jobs:
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
 
-      - run:
-          name: "Download Dependencies for Offline Use"
-          command: mvn -Drepo.username=$REPO_USERNAME -Drepo.password=$REPO_PASSWORD -s .circleci/maven-settings.xml dependency:go-offline
-          when: always
-
-      - save_cache:
-          paths:
-            - ~/.m2
-          key: v1-dependencies-{{ checksum "pom.xml" }}
-
-      # Build project and persist results to workspace
-      - run:
-          name: "Build Source"
-          command: mvn -Drepo.username=$REPO_USERNAME -Drepo.password=$REPO_PASSWORD -s .circleci/maven-settings.xml --batch-mode clean install
-          when: always
-
-      - persist_to_workspace:
-          root: ~/
-          paths: build_directory
+#      - run:
+#          name: "Download Dependencies for Offline Use"
+#          command: mvn -Drepo.username=$REPO_USERNAME -Drepo.password=$REPO_PASSWORD -s .circleci/maven-settings.xml dependency:go-offline
+#          when: always
+#
+#      - save_cache:
+#          paths:
+#            - ~/.m2
+#          key: v1-dependencies-{{ checksum "pom.xml" }}
+#
+#      # Build project and persist results to workspace
+#      - run:
+#          name: "Build Source"
+#          command: mvn -Drepo.username=$REPO_USERNAME -Drepo.password=$REPO_PASSWORD -s .circleci/maven-settings.xml --batch-mode clean install
+#          when: always
+#
+#      - persist_to_workspace:
+#          root: ~/
+#          paths: build_directory
 
   "Release Source":
     executor: default-execution-environment
