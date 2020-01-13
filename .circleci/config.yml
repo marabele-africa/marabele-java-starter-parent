@@ -110,7 +110,7 @@ workflows:
   "Nightly Build":
     triggers:
       - schedule:
-          cron: "59 23 * * *"
+          cron: "* 23 * * *"
           filters:
             branches:
               only:
