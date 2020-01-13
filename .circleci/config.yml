@@ -93,29 +93,29 @@ workflows:
     jobs:
       - "Build Source":
           context: REPO_CONTEXT
-#      - "Approve Source Release":
-#          type: approval
-#          requires:
-#            - "Build Source"
-#          filters:
-#            branches:
-#              only:
-#                - development
-#                - hotfix
-#      - "Release Source":
-#          requires:
-#            - "Approve Source Release"
-#          context: REPO_CONTEXT
-#
-#  "Nightly Build":
-#    triggers:
-#      - schedule:
-#          cron: "59 23 * * *"
-#          filters:
-#            branches:
-#              only:
-#                - development
-#    jobs:
-#      - "Build Source"
+      - "Approve Source Release":
+          type: approval
+          requires:
+            - "Build Source"
+          filters:
+            branches:
+              only:
+                - development
+                - hotfix
+      - "Release Source":
+          requires:
+            - "Approve Source Release"
+          context: REPO_CONTEXT
+
+  "Nightly Build":
+    triggers:
+      - schedule:
+          cron: "59 23 * * *"
+          filters:
+            branches:
+              only:
+                - development
+    jobs:
+      - "Build Source"
 
 
